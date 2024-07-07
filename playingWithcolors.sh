@@ -1,6 +1,7 @@
 #!/bin/bash
 
-returnColors(){
+returnColors() {
+  local colorname="$1"
   colors=(
     "Color_Off:\u001b[0m"
     "Black:\u001b[0;30m"
@@ -60,13 +61,16 @@ returnColors(){
     "On_ICyan:\u001b[0;106m"
     "On_IWhite:\u001b[0;107m"
   )
-
+  
   noColor="${colors[0]##*:}"
-  echo "----------------------------"
-  echo "List of colors"
-  echo "----------------------------"
-
   for color in "${colors[@]}"; do
-    echo -e "${color##*:} ${color%%:*} ${noColor}" 
+    if [ "${color%%:*}" == "$colorname" ]; then
+      echo "${color##*:}"
+      return
+    elif [ "${colorname}" == "list" ] || [ "${colorname}" == "-l" ]; then
+     echo -e "${color##*:} ${color%%:*} ${noColor}" 
+    fi
   done
 }
+
+returnColors "$1"
